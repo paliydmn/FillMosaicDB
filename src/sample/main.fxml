@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0"
+            prefWidth="240.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.Controller">
+   <Label layoutX="10.0" layoutY="40.0" text="Choose the path to Recordings (*.ts files)" AnchorPane.leftAnchor="10.0"
+          AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0"/>
+   <Label layoutX="10.0" layoutY="95.0" prefHeight="17.0" prefWidth="216.0" text="Choose the recorder_database.db file"
+          AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="95.0"/>
+   <TextField fx:id="tfRecPath" layoutX="10.0" layoutY="60.0" prefHeight="25.0" prefWidth="216.0"
+              AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0"/>
+   <TextField fx:id="tfChooseDbFile" layoutX="10.0" layoutY="115.0" prefHeight="25.0" prefWidth="216.0"
+              AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="115.0"/>
+   <Button fx:id="btnChooseRecPath" layoutX="206.0" layoutY="60.0" mnemonicParsing="false" onAction="#onChooseRecPath"
+           text="..." AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0"/>
+   <Button fx:id="btnChooseDbFile" layoutX="206.0" layoutY="115.0" mnemonicParsing="false" onAction="#onChooseDbFile"
+           text="..." AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="115.0"/>
+   <TextArea fx:id="taLogs" layoutX="10.0" layoutY="177.0" prefHeight="190.0" prefWidth="219.0"
+             AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+             AnchorPane.topAnchor="177.0"/>
+   <Label layoutX="11.0" layoutY="155.0" prefHeight="17.0" prefWidth="216.0" text="Found ts files:"/>
+   <Button fx:id="btnAddtoDb" layoutX="156.0" layoutY="375.0" mnemonicParsing="false" onAction="#onApply"
+           prefHeight="25.0" prefWidth="95.0" text="Add To DB" AnchorPane.bottomAnchor="10.0"
+           AnchorPane.rightAnchor="10.0">
+      <padding>
+         <Insets left="-10.0"/>
+      </padding>
+   </Button>
+   <Label fx:id="lbStatus" layoutX="10.0" layoutY="379.0" prefHeight="17.0" prefWidth="116.0" textFill="#901a0f"
+          AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="114.0"/>
+   <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Menu mnemonicParsing="false" text="File">
+         <MenuItem fx:id="miExit" mnemonicParsing="false" onAction="#onExit" text="Close"/>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Edit">
+         <MenuItem fx:id="miClearAll" mnemonicParsing="false" onAction="#onClearAll" text="Clear All Fields"/>
+      </Menu>
+      <Menu mnemonicParsing="false" text="About">
+         <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#onShowAbout" text="About"/>
+      </Menu>
+   </MenuBar>
+   <ProgressIndicator fx:id="pbar" layoutX="206.0" layoutY="409.0" prefHeight="17.0" prefWidth="24.0"
+                      AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="10.0"/>
+</AnchorPane>

@@ -1,0 +1,32 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="FillMosaicDB">
+    <output-path>$PROJECT_DIR$/out/artifacts/FillMosaicDB</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="alias" value="" />
+        <option name="appClass" value="sample.Main" />
+        <option name="description" value="" />
+        <option name="enabledSigning" value="true" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="icons">
+          <JavaFxApplicationIcons>
+            <option name="windowsIcon" value="$PROJECT_DIR$/src/sample/FillMosaicDB.ico" />
+          </JavaFxApplicationIcons>
+        </option>
+        <option name="keystore" value="" />
+        <option name="nativeBundle" value="exe" />
+        <option name="title" value="FillMosaicDB" />
+        <option name="vendor" value="paliydmn@gmail.com" />
+        <option name="version" value="0.01" />
+        <option name="width" value="340" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="FillMosaicDB.jar">
+        <element id="module-output" name="FillMosaicDB" />
+      </element>
+      <element id="library" level="project" name="ojdbc6-11.2.0.4.0-atlassian-hosted" />
+      <element id="library" level="project" name="sqlite-jdbc-3.21.0" />
+    </root>
+  </artifact>
+</component>
