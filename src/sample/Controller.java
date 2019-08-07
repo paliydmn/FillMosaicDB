@@ -8,7 +8,10 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +19,9 @@ public class Controller {
 
     final private FileChooser fileChooser = new FileChooser();
     final private DirectoryChooser directoryChooser = new DirectoryChooser();
+
+    private static final String MEDIAINFOEXE = System.getProperty("user.dir") + "\\MediaInfo.exe";
+
     @FXML
     public TextField tfRecPath;
     @FXML
@@ -56,6 +62,7 @@ public class Controller {
     }*/
 
     public void onChooseRecPath() {
+       // calculateDuration();
         Stage stage = (Stage) btnAddtoDb.getScene().getWindow();
         File dir = directoryChooser.showDialog(stage);
         if (dir != null) {
@@ -82,6 +89,40 @@ public class Controller {
         } else {
             lbStatus.setText("Found " + fileList.size() + " recordings");
         }
+    }
+
+    //get duration of video file in seconds
+    int  calculateDuration(File file){
+
+        Runtime rt = Runtime.getRuntime();
+        String[] commands = {MEDIAINFOEXE, "--Inform=\"Video;%Duration%\"", file.getAbsolutePath()};
+        System.out.println(MEDIAINFOEXE);
+        Process proc = null;
+        int duration = 0;
+        try {
+            proc = rt.exec(commands);
+
+        BufferedReader stdInput = new BufferedReader(new
+                InputStreamReader(proc.getInputStream()));
+
+        BufferedReader stdError = new BufferedReader(new
+                InputStreamReader(proc.getErrorStream()));
+
+// Read the output from the command
+        String s = null;
+        while ((s = stdInput.readLine()) != null) {
+            if (!s.equals(""))
+                duration = Integer.valueOf(s)/1000;
+        }
+
+// Read any errors from the attempted command
+        while ((s = stdError.readLine()) != null) {
+            duration = 0;
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return duration;
     }
 
     public void onChooseDbFile() {
@@ -131,8 +172,15 @@ public class Controller {
                 if (file.getAbsolutePath().contains("'")) {
                     file = new File(file.getAbsolutePath().replace("'", ""));
                 }
-                result = RecordedTVDAO.insertRecs(file);
-                mLogger.printLine(file.getName() + " ---> " + result);
+                //result = RecordedTVDAO.insertRecs(file);
+                double duration = calculateDuration(file);
+                if(duration != 0){
+                    result = RecordedTVDAO.insertRecsWithDuration(file, duration);
+                    mLogger.printLine(file.getName() + " ---> " + result);
+                } else {
+                    mLogger.printLine(file.getName() + " ---> Error: Duration is 0 or not calculated" );
+                }
+
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -157,9 +205,13 @@ public class Controller {
 
     public void onShowAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Fill Mosaic database " +
-                "\nVersion 0.01" +
+                "\nVersion 0.02" +
                 "\nFor questions and propositions " +
-                "\nplease write to paliydmn@gmail.com", ButtonType.CLOSE);
+                "\nplease write to paliydmn@gmail.com"+
+                "\n----------------------------------" +
+                "\nDuration of ts files are calculated by MediaInfo" +
+                "\nhttps://mediaarea.net/fr/MediaInfo",
+                ButtonType.CLOSE);
         alert.show();
     }
 

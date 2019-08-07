@@ -39,6 +39,37 @@ class RecordedTVDAO {
         return "Success";
     }
 
+ //INSERT new Recs
+    //*************************************
+    public static String insertRecsWithDuration(File file, double duration) throws ClassNotFoundException {
+        //Declare a INSERT statement
+        //(10000, 10000, 1000, 1, "D:\RecTV\test\360.ts", "NoName", 360 );
+        int schedule_id = 1000;
+        long start_time = new Timestamp(System.currentTimeMillis()).getTime() / 1000L;
+        int timer_id = getRandomNumberInRange(1000, 10000000);
+
+        String updateStmt =
+                "INSERT INTO completed_recording\n" +
+                        "(schedule_id, timer_id, state, filename, channel_name, name, start_time, duration)\n" +
+                        "values (" + schedule_id + "," + timer_id + ", 1 ,'" + file.getAbsolutePath() +
+                        "','NoName'" + ",'" + file.getName() + "'," + start_time + "," + duration + ")";
+
+        // System.out.println(updateStmt);
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //Execute INSERT operation
+        try {
+            DBUtilSQLite.dbExecuteUpdate(updateStmt);
+        } catch (SQLException e) {
+            System.out.print("Error occurred while INSERT Operation: " + e);
+            return e.getMessage();
+        }
+        return "Success";
+    }
+
     //INSERT new Recs
     //*************************************
     public static String insertRecs(List<File> files) throws ClassNotFoundException {
