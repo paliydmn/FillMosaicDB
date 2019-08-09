@@ -2,10 +2,18 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -21,7 +29,10 @@ public class Controller {
     final private DirectoryChooser directoryChooser = new DirectoryChooser();
 
     private static final String MEDIAINFOEXE = System.getProperty("user.dir") + "\\MediaInfo.exe";
+    private static int DEFAULTDURATION = 0;
 
+    @FXML
+    public AnchorPane mainAnchor;
     @FXML
     public TextField tfRecPath;
     @FXML
@@ -37,6 +48,7 @@ public class Controller {
     @FXML
     public Label lbStatus;
     public ProgressIndicator pbar;
+
 
     private List<File> fileList;
     private MyLogger mLogger;
@@ -175,8 +187,11 @@ public class Controller {
                 //result = RecordedTVDAO.insertRecs(file);
                 double duration = calculateDuration(file);
                 if(duration != 0){
-                    result = RecordedTVDAO.insertRecsWithDuration(file, duration);
+                    result = RecordedTVDAO.insertRecsWithDuration(file, duration);result = RecordedTVDAO.insertRecsWithDuration(file, duration);
                     mLogger.printLine(file.getName() + " ---> " + result);
+                } else if (DEFAULTDURATION != 0){
+                    result = RecordedTVDAO.insertRecsWithDuration(file, DEFAULTDURATION);
+                    mLogger.printLine(file.getName() + " ---> Warning: Duration is 0 or not calculated, Default Duration is applied" );
                 } else {
                     mLogger.printLine(file.getName() + " ---> Error: Duration is 0 or not calculated" );
                 }
@@ -213,6 +228,39 @@ public class Controller {
                 "\nhttps://mediaarea.net/fr/MediaInfo",
                 ButtonType.CLOSE);
         alert.show();
+    }
+
+    public void onSetDefDuration(ActionEvent actionEvent) {
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(mainAnchor.getScene().getWindow());
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.setPadding(new Insets(10, 10, 10, 10));
+        dialogVbox.getChildren().add(new Label("Set Default Duration for corrupted TS files (min):"));
+        TextField defDuration = new TextField("0");
+        dialogVbox.getChildren().add(defDuration);
+        Button ok = new Button("OK");
+        ok.setAlignment(Pos.BOTTOM_RIGHT);
+
+        dialogVbox.getChildren().add(ok);
+        ok.onActionProperty().setValue(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DEFAULTDURATION = Integer.parseInt(defDuration.getText());
+                System.out.println(DEFAULTDURATION);
+                if(DEFAULTDURATION == 0){
+                    lbStatus.setText("Default duration is " + DEFAULTDURATION + " file will not be added");
+                } else {
+                    lbStatus.setText("Default duration is " + DEFAULTDURATION );
+                }
+                dialog.close();
+            }
+        });
+
+        Scene dialogScene = new Scene(dialogVbox, 250, 120);
+        dialog.setScene(dialogScene);
+        dialog.show();
+
     }
 
 /*

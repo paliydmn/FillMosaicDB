@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0"
+<AnchorPane fx:id="mainAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0"
             prefWidth="240.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sample.Controller">
    <Label layoutX="10.0" layoutY="40.0" text="Choose the path to Recordings (*.ts files)" AnchorPane.leftAnchor="10.0"
@@ -37,6 +37,7 @@
       </Menu>
       <Menu mnemonicParsing="false" text="Edit">
          <MenuItem fx:id="miClearAll" mnemonicParsing="false" onAction="#onClearAll" text="Clear All Fields"/>
+         <MenuItem fx:id="miSetDefDuration" mnemonicParsing="false" onAction="#onSetDefDuration" text="Set Default duration"/>
       </Menu>
       <Menu mnemonicParsing="false" text="About">
          <MenuItem fx:id="miAbout" mnemonicParsing="false" onAction="#onShowAbout" text="About"/>
